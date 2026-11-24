@@ -17,8 +17,8 @@ import org.springframework.http.ResponseEntity;
 public class CalendarController {
     private final CalendarService calendarioService;
 
-    @PostMapping(value = "/get", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> getCalendario(@RequestBody CalendarRequest request) {
+    @PostMapping(value = "/obtain", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> obtainCalendar(@RequestBody CalendarRequest request) {
         CalendarResponse response = calendarioService.takeScreenshot(request.address());
         return ResponseEntity.ok(response.screenshot());
     }
