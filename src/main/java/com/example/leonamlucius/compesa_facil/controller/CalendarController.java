@@ -4,8 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import com.example.leonamlucius.compesa_facil.services.CalendarService;
+
 import com.example.leonamlucius.compesa_facil.dto.CalendarResponse;
+import com.example.leonamlucius.compesa_facil.service.CalendarService;
 import com.example.leonamlucius.compesa_facil.dto.CalendarRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
