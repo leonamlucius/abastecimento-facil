@@ -159,6 +159,15 @@ public class BotService {
                         continue;
                     }
 
+                    if (text.length() != 8 || text.matches(".*-.*") || !text.matches("\\d+")) {
+                        sendMessage(chatId,
+                                "CEP inválido. Digite o seu CEP sem pontos ou traços, apenas números e 8 dígitos.");
+                        sendButtons(chatId);
+                        continue;
+
+                    }
+                    ;
+
                     JsonNode cepResponse = cepClient.get().uri("/{cep}", text).retrieve().body(JsonNode.class);
 
                     userService.createUser(new UserRequest(chatId, cepResponse.path("street").asText()));
