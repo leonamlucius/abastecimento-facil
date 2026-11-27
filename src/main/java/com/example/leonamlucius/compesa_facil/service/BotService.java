@@ -191,7 +191,7 @@ public class BotService {
                 .toBodilessEntity();
     }
 
-    private void sendImage(long chatId, String caption, byte[] image) {
+    public void sendImage(long chatId, String caption, byte[] image) {
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("chat_id", String.valueOf(chatId));
