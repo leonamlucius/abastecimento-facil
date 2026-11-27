@@ -35,6 +35,7 @@ public class BotService {
 
     private final CalendarService calendarioService;
     private final RestClient telegramClient;
+    private final RestClient cepClient;
     private boolean hasAreadyAddress = false;
     private long offset = 0;
 
@@ -51,6 +52,7 @@ public class BotService {
         this.calendarioService = calendarioService;
         this.token = token;
         this.telegramClient = RestClient.create("https://api.telegram.org/bot" + this.token);
+        this.cepClient = RestClient.create("https://brasilapi.com.br/api/cep/v2");
     }
 
     @Scheduled(fixedDelay = 3000)
@@ -153,11 +155,22 @@ public class BotService {
 
                 if (chatsAguardando.contains(chatId)) {
                     if (text.isEmpty()) {
-                        sendMessage(chatId, "Digite um endereço válido.");
+                        sendMessage(chatId, "Digite o seu CEP sem pontos ou traços.");
                         continue;
                     }
 
-                    userService.createUser(new UserRequest(chatId, text));
+                    if (text.length() != 8 || text.matches(".*-.*") || !text.matches("\\d+")) {
+                        sendMessage(chatId,
+                                "CEP inválido. Digite o seu CEP sem pontos ou traços, apenas números e 8 dígitos.");
+                        sendButtons(chatId);
+                        continue;
+
+                    }
+                    ;
+
+                    JsonNode cepResponse = cepClient.get().uri("/{cep}", text).retrieve().body(JsonNode.class);
+
+                    userService.createUser(new UserRequest(chatId, cepResponse.path("street").asText()));
 
                     chatsAguardando.remove(chatId);
 
